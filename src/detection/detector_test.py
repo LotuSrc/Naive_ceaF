@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # -*- coding: utf-8 -*-
 # @Time    : 2018/10/21 14:34
 # @Author  : Ruichen Shao
@@ -8,7 +7,7 @@ from src.detection.cv_detector import OpencvDector
 import cv2
 from src.detection.cv_config import Config
 
-image_path = Config.ROOT + 'resources/face_image/1.jpg'
+image_path = Config.ROOT + '/resources/face_image/1.jpg'
 image = cv2.imread(image_path)
 
 # OpencvDector 单元测试
@@ -21,8 +20,6 @@ for (x, y, w, h) in opencv_faces:
 cv2.imshow('opencv_image', image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-=======
-# coding=utf-8
 
 from src.detection.face_reg_detector import FaceRegDetector
 
@@ -33,12 +30,11 @@ detector = FaceRegDetector()
 # index = wd.find("src")
 # os.chdir(wd[:index - 1])
 # print(os.getcwd())
-def test():
-    face_locations = detector.detect('resources/face_image/1.jpg')
-    print(face_locations)
-
-
-# wd = os.chdir
-
-test()
->>>>>>> 41694cca75b132074bba423451ace0d0cf59063e
+# def test():
+#     face_locations = detector.detect('resources/face_image/1.jpg')
+#     print(face_locations)
+#
+#
+# # wd = os.chdir
+#
+# test()
