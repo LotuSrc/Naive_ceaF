@@ -5,9 +5,9 @@
 
 from src.detection.cv_detector import OpencvDector
 import cv2
-from src.detection.cv_config import Config
+from global_config import ROOT_PATH
 
-image_path = Config.ROOT + '/resources/face_image/1.jpg'
+image_path = ROOT_PATH + '/resources/face_image/5.jpg'
 image = cv2.imread(image_path)
 
 # OpencvDector 单元测试
