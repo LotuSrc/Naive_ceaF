@@ -9,7 +9,7 @@ from global_config import ROOT_PATH
 from src.detection.cv_detector import OpencvDector
 from src.detection.util import show_detected_face
 
-image_path = ROOT_PATH + '/resources/face_image/5.jpg'
+image_path = ROOT_PATH + '/resources/face_image/6.jpg'
 image = cv2.imread(image_path)
 
 # OpencvDector 单元测试
