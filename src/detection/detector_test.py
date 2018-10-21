@@ -38,3 +38,5 @@ detector = FaceRegDetector()
 # # wd = os.chdir
 #
 # test()
+
+print("hi")
