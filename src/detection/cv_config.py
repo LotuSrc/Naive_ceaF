@@ -3,8 +3,8 @@
 # @Author  : Ruichen Shao
 # @File    : cv_config.py
 
-import get_root
+from global_config import ROOT_PATH
+
 
 class Config():
-    ROOT = get_root.getRoot()
-    CASCPATH = ROOT + "/resources/model/haarcascade_frontalface_default.xml"
+    CASCPATH = ROOT_PATH + "/resources/model/haarcascade_frontalface_default.xml"

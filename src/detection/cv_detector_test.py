@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2018/10/21 14:34
 # @Author  : Ruichen Shao
-# @File    : detector_test.py
+# @File    : cv_detector_test.py
 
 from src.detection.cv_detector import OpencvDector
 import cv2
@@ -21,22 +21,4 @@ cv2.imshow('opencv_image', image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
-from src.detection.face_reg_detector import FaceRegDetector
 
-detector = FaceRegDetector()
-
-
-# wd = os.getcwd()
-# index = wd.find("src")
-# os.chdir(wd[:index - 1])
-# print(os.getcwd())
-# def test():
-#     face_locations = detector.detect('resources/face_image/1.jpg')
-#     print(face_locations)
-#
-#
-# # wd = os.chdir
-#
-# test()
-
-print("hi")
