@@ -1,16 +1,15 @@
 # coding=utf-8
 from sklearn import datasets
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.cross_validation import cross_val_score
+from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import scale, normalize
 from hyperopt import hp
-import opt_util as hyper_opt
+import src.offline_tools.hyper_opt.opt_util as hyper_opt
 
 # 数据准备
 iris = datasets.load_iris()
 X = iris.data
 y = iris.target
-
 
 # 待优化目标函数
 def func(params):
