@@ -1,40 +1,40 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2018/10/25 22:18
+# @Time    : 2018/10/26 11:06
 # @Author  : Ruichen Shao
-# @File    : open_face_extractor.py
+# @File    : seeta_face_extractor.py
 
 from src.feature_extractor.base_feature_extractor import BaseFeatureExtractor
-import openface
-import os
+from pyseeta import Detector, Aligner, Identifier
 import cv2
 
-class OpenFaceExtractor(BaseFeatureExtractor):
+class SeetaFaceExtractor(BaseFeatureExtractor):
     def __init__(self):
-        self.align = openface.AlignDlib('/home/chuangke6/tmp/download/lib-src/openface/models/dlib/shape_predictor_68_face_landmarks.dat')
-        self.net = openface.TorchNeuralNet('/home/chuangke6/tmp/download/lib-src/openface/models/openface/nn4.small2.v1.t7',
-                                           cuda=True)
+        self.detector = Detector()
+        self.detector.set_min_face_size(30)
+        self.aligner = Aligner()
+        self.identifier = Identifier()
 
     def extact(self, image_path, is_one_face=False):
         image = cv2.imread(image_path)
         if image is None:
             raise Exception('Unable to load image: {}'.format(image_path))
 
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
         if is_one_face:
-            bb1 = self.align.getLargestFaceBoundingBox(image)
+            bb1 = self.detector.detect(image_gray)
             bbs = [bb1]
         else:
-            bbs = self.align.getAllFaceBoundingBoxes(image)
+            bbs = self.detector.detect(image_gray)
         if len(bbs) == 0 or (is_one_face and bb1 is None):
             raise Exception('Unable to find a face: {}'.format(image_path))
 
         reps = []
         for bb in bbs:
-            aligned_face = self.align.align(imgDim=96, rgbImg=image, bb=bb, landmarkIndices=openface.AlignDlib.OUTER_EYES_AND_NOSE)
+            aligned_face = self.aligner.align(image_gray, bb)
             if aligned_face is None:
                 raise Exception('Unable to align image: {}'.format(image_path))
-            rep = self.net.forward(aligned_face)
+            rep = self.identifier.extract_feature_with_crop(image, aligned_face)
             reps.append(rep)
 
         # 因为已经明确一张图只有一个人
@@ -45,7 +45,9 @@ class OpenFaceExtractor(BaseFeatureExtractor):
 
 
 if __name__ == "__main__":
-    extractor = OpenFaceExtractor()
-    feature = extractor.extact(
+    extractor = SeetaFaceExtractor()
+    for i in range(0, 1000):
+        feature = extractor.extact(
         "/home/chuangke6/app/Naive_ceaF/resources/face_image/0/huangbo1.jpg")
+        print(i)
     print(feature)
