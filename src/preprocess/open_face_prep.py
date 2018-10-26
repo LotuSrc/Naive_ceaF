@@ -6,6 +6,7 @@
 import json
 import multiprocessing
 import os
+import pp
 
 from src.feature_extractor.open_face_extractor import OpenFaceExtractor
 
@@ -14,6 +15,8 @@ imgdir = '/home/chuangke6/chuangke/diyi/%s' % sub_dir
 
 
 def func(process_id, files):
+    print(process_id, len(files))
+    return
     extractor = OpenFaceExtractor()
     erros = []
     features = {}
@@ -43,16 +46,32 @@ def func(process_id, files):
     json.dump(erros, open("/home/chuangke6/erros/openface_erros_%d.json" % process_id, "w"))
 
 
-if __name__ == "__main__":
-    pool = multiprocessing.Pool(processes=32)
+# if __name__ == "__main__":
+#     pool = multiprocessing.Pool(processes=32)
+#     files = os.listdir(imgdir)
+#     length = len(files)
+#     print('There are {} images in total'.format(length))
+#     step = int(length / 31)
+#     s = 0
+#     for i in range(32):
+#         pool.apply(func, (i, files[i * step: (i + 1) * step]))
+#         s += len(files[i * step: (i + 1) * step])
+#     pool.close()
+#     pool.join()
+#     print("finish")
+
+if __name__=="__main__":
+    ppservers = ()
+    ncpus = 32
+    # Creates jobserver with ncpus workers
+    job_server = pp.Server(ncpus, ppservers=ppservers)
+
+    imgdir = '/home/chuangke6/chuangke/diyi/%s' % sub_dir
     files = os.listdir(imgdir)
     length = len(files)
     print('There are {} images in total'.format(length))
     step = int(length / 31)
-    s = 0
     for i in range(32):
-        pool.apply(func, (i, files[i * step: (i + 1) * step]))
-        s += len(files[i * step: (i + 1) * step])
-    pool.close()
-    pool.join()
-    print("finish")
+        f1 = job_server.submit(func, (i, files[i * step: (i + 1) * step]))
+        f1()
+    job_server.print_stats()
