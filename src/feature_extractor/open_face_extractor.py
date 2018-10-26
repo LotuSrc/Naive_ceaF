@@ -19,7 +19,8 @@ class OpenFaceExtractor(BaseFeatureExtractor):
     def extact(self, image_path, is_one_face=False):
         image = cv2.imread(image_path)
         if image is None:
-            raise Exception('Unable to load image: {}'.format(image_path))
+            print('Unable to load image: {}'.format(image_path))
+            return None
 
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
@@ -28,15 +29,19 @@ class OpenFaceExtractor(BaseFeatureExtractor):
             bbs = [bb1]
         else:
             bbs = self.align.getAllFaceBoundingBoxes(image)
+
+        if len(bbs) > 1:
+            return None
+
         if len(bbs) == 0 or (is_one_face and bb1 is None):
-            raise Exception('Unable to find a face: {}'.format(image_path))
+            return None
 
         reps = []
         for bb in bbs:
             aligned_face = self.align.align(imgDim=96, rgbImg=image, bb=bb,
                                             landmarkIndices=openface.AlignDlib.OUTER_EYES_AND_NOSE)
             if aligned_face is None:
-                raise Exception('Unable to align image: {}'.format(image_path))
+                return None
             rep = self.net.forward(aligned_face)
             return rep
             reps.append(rep)
@@ -49,7 +54,7 @@ class OpenFaceExtractor(BaseFeatureExtractor):
 
 
 if __name__ == "__main__":
-    extractor = OpenFaceExtractor(model='nn4.v1.t7')
+    extractor = OpenFaceExtractor()
     feature = extractor.extact(
         "/home/chuangke6/app/Naive_ceaF/resources/face_image/0/huangbo1.jpg")
     print(feature)

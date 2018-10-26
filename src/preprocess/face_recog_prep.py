@@ -6,14 +6,14 @@
 import json
 import os
 
-from src.feature_extractor.open_face_extractor import OpenFaceExtractor
+from src.feature_extractor.face_recog_extractor import FaceRecogExtractor
 
 
 erros = []
 
 for sub_dir in ['no1', 'no2']:
     imgdir = '/home/chuangke6/chuangke/diyi/%s' %sub_dir
-    extractor = OpenFaceExtractor()
+    extractor = FaceRecogExtractor()
     files = os.listdir(imgdir)
     length = len(files)
     print('There are {} images in total'.format(length))
@@ -40,8 +40,8 @@ for sub_dir in ['no1', 'no2']:
             print("erros: ", len(erros))
 
     print("finish %s and %d images" % (sub_dir, count))
-    json.dump(features, open("/home/chuangke6/features/openface_%s.json" % sub_dir, "w"))
+    json.dump(features, open("/home/chuangke6/features/hog_%s.json" % sub_dir, "w"))
 
 
-json.dump(erros, open("/home/chuangke6/erros/openface_erros.json", "w"))
+json.dump(erros, open("/home/chuangke6/erros/hog_erros.json", "w"))
 
