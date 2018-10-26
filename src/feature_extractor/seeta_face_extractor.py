@@ -17,8 +17,8 @@ class SeetaFaceExtractor(BaseFeatureExtractor):
     def extact(self, image_path, is_one_face=False):
         image = cv2.imread(image_path)
         if image is None:
-            raise Exception('Unable to load image: {}'.format(image_path))
-
+            print('Unable to load image: {}'.format(image_path))
+            return None
         image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
         if is_one_face:
@@ -26,14 +26,18 @@ class SeetaFaceExtractor(BaseFeatureExtractor):
             bbs = [bb1]
         else:
             bbs = self.detector.detect(image_gray)
+
+        if len(bbs) > 1:
+            print('More than two faces in {}'.format(image_path))
+            return None
         if len(bbs) == 0 or (is_one_face and bb1 is None):
-            raise Exception('Unable to find a face: {}'.format(image_path))
+            return None
 
         reps = []
         for bb in bbs:
             aligned_face = self.aligner.align(image_gray, bb)
             if aligned_face is None:
-                raise Exception('Unable to align image: {}'.format(image_path))
+                return None
             rep = self.identifier.extract_feature_with_crop(image, aligned_face)
             reps.append(rep)
 
