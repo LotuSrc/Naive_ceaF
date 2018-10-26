@@ -5,14 +5,16 @@
 
 from src.feature_extractor.base_feature_extractor import BaseFeatureExtractor
 import openface
-import os
 import cv2
+import os
 
 class OpenFaceExtractor(BaseFeatureExtractor):
     def __init__(self):
-        self.align = openface.AlignDlib('/home/chuangke6/tmp/download/lib-src/openface/models/dlib/shape_predictor_68_face_landmarks.dat')
-        self.net = openface.TorchNeuralNet('/home/chuangke6/tmp/download/lib-src/openface/models/openface/nn4.small2.v1.t7',
-                                           cuda=True)
+        modelDir = os.path.join("/home/chuangke6/tmp/download/lib-src/openface/models")
+        dlibModelDir = os.path.join(modelDir, 'dlib')
+        openfaceModelDir = os.path.join(modelDir, 'openface')
+        self.align = openface.AlignDlib(os.path.join(dlibModelDir, "shape_predictor_68_face_landmarks.dat"))
+        self.net = openface.TorchNeuralNet(os.path.join(openfaceModelDir, 'nn4.small2.v1.t7'))
 
     def extact(self, image_path, is_one_face=False):
         image = cv2.imread(image_path)
@@ -35,6 +37,7 @@ class OpenFaceExtractor(BaseFeatureExtractor):
             if aligned_face is None:
                 raise Exception('Unable to align image: {}'.format(image_path))
             rep = self.net.forward(aligned_face)
+            return rep
             reps.append(rep)
 
         # 因为已经明确一张图只有一个人
