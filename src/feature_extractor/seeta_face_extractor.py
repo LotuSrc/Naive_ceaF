@@ -39,6 +39,7 @@ class SeetaFaceExtractor(BaseFeatureExtractor):
             if aligned_face is None:
                 return None
             rep = self.identifier.extract_feature_with_crop(image, aligned_face)
+            return rep
             reps.append(rep)
 
         # 因为已经明确一张图只有一个人
