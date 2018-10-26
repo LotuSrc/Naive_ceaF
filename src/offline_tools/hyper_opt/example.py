@@ -1,7 +1,7 @@
 # coding=utf-8
 from sklearn import datasets
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import cross_val_score
+from sklearn.cross_validation import cross_val_score
 from sklearn.preprocessing import scale, normalize
 from hyperopt import hp
 import src.offline_tools.hyper_opt.opt_util as hyper_opt

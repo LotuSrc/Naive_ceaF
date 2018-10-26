@@ -7,7 +7,7 @@ class FaceRecogExtractor(BaseFeatureExtractor):
     def extact(self, image_path, is_one_face=False):
         image = face_recognition.load_image_file(image_path)
         # TODO model到时候可以改成cnn
-        face_locations = face_recognition.face_locations(image, model='hog')
+        face_locations = face_recognition.face_locations(image, model='cnn')
         # num_jitters越大越准确，但是会消耗更多
         features = face_recognition.face_encodings(
             image, face_locations, num_jitters=1)

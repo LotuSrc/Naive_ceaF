@@ -9,7 +9,7 @@ from global_config import ROOT_PATH
 import src.offline_tools.hyper_opt.opt_util as hyper_opt
 import src.offline_tools.data_augment.main as aug_wrapper
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import cross_val_score
+from sklearn.cross_validation import cross_val_score
 from sklearn.preprocessing import scale, normalize
 from hyperopt import hp
 import numpy as np
@@ -23,7 +23,7 @@ import os
 extractor = FaceRecogExtractor()
 print('Start loading data.')
 if not os.path.isfile(ROOT_PATH + '/resources/face_image/data.npy'):
-    X = [[]]
+    X = []
     y = []
     for i in range(0,3):
         imgdir = ROOT_PATH + '/resources/face_image/' + str(i) + '/output'
@@ -34,6 +34,7 @@ if not os.path.isfile(ROOT_PATH + '/resources/face_image/data.npy'):
                 feature = np.asarray(extractor.extact(path), dtype=float)
                 if (feature.shape != (1, 128)):
                     print(path)
+                    continue
                 X.append(np.squeeze(feature))
                 y.append(i)
 
