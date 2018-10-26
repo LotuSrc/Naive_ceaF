@@ -6,6 +6,7 @@ sys.path.append('/home/chuangke6/tmp/download/lib-src/openface')
 sys.path.append('/home/chuangke6/tmp/download/lib-src/pyseeta')
 
 file_path = "src/preprocess/open_face_prep.py"
+print(file_path)
 
 
 with open(file_path, 'r', encoding='UTF-8') as f:
