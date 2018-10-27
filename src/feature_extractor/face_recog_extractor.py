@@ -15,10 +15,10 @@ class FaceRecogExtractor(BaseFeatureExtractor):
         features = face_recognition.face_encodings(
             image, face_locations, num_jitters=1)
         # 因为已经明确一张图只有一个人
-        if len(features) > 1:
+        if len(features) != 1:
             print("multi-face", image_path)
             return None
-        return list(features.reshape((1, -1)))
+        return list(features)[0]
 
 
 if __name__ == "__main__":

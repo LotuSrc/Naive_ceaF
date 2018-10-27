@@ -3,9 +3,11 @@
 # @Author  : Ruichen Shao
 # @File    : seeta_face_extractor.py
 
-from src.feature_extractor.base_feature_extractor import BaseFeatureExtractor
-from pyseeta import Detector, Aligner, Identifier
 import cv2
+from pyseeta import Detector, Aligner, Identifier
+
+from src.feature_extractor.base_feature_extractor import BaseFeatureExtractor
+
 
 class SeetaFaceExtractor(BaseFeatureExtractor):
     def __init__(self):
@@ -53,6 +55,6 @@ if __name__ == "__main__":
     extractor = SeetaFaceExtractor()
     for i in range(0, 1000):
         feature = extractor.extact(
-        "/home/chuangke6/app/Naive_ceaF/resources/face_image/0/huangbo1.jpg")
+            "/home/chuangke6/app/Naive_ceaF/resources/face_image/0/huangbo1.jpg")
         print(i)
     print(feature)

@@ -5,7 +5,7 @@ import sys
 sys.path.append('/home/chuangke6/tmp/download/lib-src/openface')
 sys.path.append('/home/chuangke6/tmp/download/lib-src/pyseeta')
 
-file_path = "src/preprocess/open_face_prep.py"
+file_path = "src/solution3/main.py"
 print(file_path)
 
 

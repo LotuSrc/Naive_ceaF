@@ -4,20 +4,19 @@
 # @File    : seeta_face_prep.py
 
 import json
-import multiprocessing
 import os
-import pp
 
 from src.feature_extractor.open_face_extractor import OpenFaceExtractor
 
-sub_dir = 'no1'
+sub_dir = 'no2'
 imgdir = '/home/chuangke6/chuangke/diyi/%s' % sub_dir
 
 
 def func(process_id, files):
     print(process_id, len(files))
-    return
+
     extractor = OpenFaceExtractor()
+    return
     erros = []
     features = {}
     count = 0
@@ -37,7 +36,7 @@ def func(process_id, files):
         count += 1
 
         if count % 1000 == 0:
-            print('{} finish {} images of {} images.'.format(process_id,count, length))
+            print('{} finish {} images of {} images.'.format(process_id, count, length))
             print("%d erros: " % process_id, len(erros))
 
     print("finish %s and %d images" % (sub_dir, count))
@@ -46,32 +45,16 @@ def func(process_id, files):
     json.dump(erros, open("/home/chuangke6/erros/openface_erros_%d.json" % process_id, "w"))
 
 
-# if __name__ == "__main__":
-#     pool = multiprocessing.Pool(processes=32)
-#     files = os.listdir(imgdir)
-#     length = len(files)
-#     print('There are {} images in total'.format(length))
-#     step = int(length / 31)
-#     s = 0
-#     for i in range(32):
-#         pool.apply(func, (i, files[i * step: (i + 1) * step]))
-#         s += len(files[i * step: (i + 1) * step])
-#     pool.close()
-#     pool.join()
-#     print("finish")
-
-if __name__=="__main__":
-    ppservers = ()
-    ncpus = 32
-    # Creates jobserver with ncpus workers
-    job_server = pp.Server(ncpus, ppservers=ppservers)
-
+if __name__ == "__main__":
     imgdir = '/home/chuangke6/chuangke/diyi/%s' % sub_dir
     files = os.listdir(imgdir)
+    import random
+
+    random.shuffle(files)
     length = len(files)
-    print('There are {} images in total'.format(length))
-    step = int(length / 31)
-    for i in range(32):
-        f1 = job_server.submit(func, (i, files[i * step: (i + 1) * step]))
-        f1()
-    job_server.print_stats()
+    step = int(length / 3)
+    for i in range(4):
+        file_name = "/home/chuangke6/partition/%s/%i.idx" % (sub_dir, i)
+        f = open(file_name, "w")
+        f.write(('\n'.join(files[i * step: (i + 1) * step])))
+        print(i)
